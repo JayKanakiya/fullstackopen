@@ -1,0 +1,24 @@
+
+
+note over browser:
+Data is sent in the body of the POST request
+end note
+
+browser->server: HTTP POST request address new_note
+server-->browser: HTTP status code 302 - url redirect
+
+note over browser:
+Browser reloads the notes page
+end note
+
+browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/notes
+server-->browser: HTML code
+browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/main.css
+server-->browser: main.css
+browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/main.js
+server-->browser: main.js
+browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/data.json
+server-->browser: data.json
+
+
+

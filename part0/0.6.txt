@@ -1,0 +1,7 @@
+note over browser:
+Write note and submit form
+HTML displays the message in the browser. Then, it sends the message to the server.
+end note
+browser->server: HTTP GET https://fullstack-exampleapp.herokuapp.com/new_note_spa
+server-->browser: response {"message":"note created"}
+
