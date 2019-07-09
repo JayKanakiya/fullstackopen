@@ -9,8 +9,8 @@ const Statistic = (props) => {
 
 const Statistics = (props) => {
     const all = props.good + props.bad + props.neutral
-    const average = (props.good + props.bad*-1)/all
-    const positive = (props.good)/all
+    const average = (props.good + (props.bad*-1))/all
+    const positive = (props.good)/all *100
     if(all===0){
         return (
             <p>No feedbacks given</p>
@@ -18,13 +18,28 @@ const Statistics = (props) => {
     }
     return (
         <div>
-            <Statistic text="good" value={props.good} />
-            <Statistic text="neutral" value={props.neutral} />
-            <Statistic text="bad" value={props.bad} />
-            <Statistic text="all" value={all} />
-            <Statistic text="average" value={average} />
-            <Statistic text="positive" value={positive} />
-            
+            <table>
+                <tbody>
+                    <tr>
+                        <td><Statistic text="good" value={props.good} /></td>
+                    </tr>
+                    <tr>
+                        <td><Statistic text="neutral" value={props.neutral} /></td>
+                    </tr>
+                    <tr>
+                        <td><Statistic text="bad" value={props.bad} /></td>
+                    </tr>
+                    <tr>
+                        <td><Statistic text="all" value={all} /></td>
+                    </tr>
+                    <tr>
+                        <td><Statistic text="average" value={average} /></td>
+                    </tr>
+                    <tr>
+                        <td><Statistic text="positive" value={positive} /></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     )
 }
