@@ -53,7 +53,8 @@ const App = () => {
             />
         )
     return (
-      <div>    
+      <div>  
+          <h1>Web development curriculum </h1>  
           {all()}
       </div>
 
