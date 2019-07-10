@@ -20,11 +20,22 @@ const App = () => {
   const addName = (event) => {
 	  event.preventDefault()
 	//   console.log(event.target)
-	  const obj = {
-		  name: newName,
-	  }
-	  setPersons(persons.concat(obj))
-	  setNewName(' ')
+	
+		// console.log(persons[1]);
+
+		if(persons.findIndex(person => person.name === newName) > -1){
+			alert(newName + ' is already in the phonebook')
+		}
+		else{
+			const obj = {
+				name: newName,
+			}
+			// console.log(persons)
+			// console.log(obj)		
+			setPersons(persons.concat(obj))
+			setNewName(' ')
+		}
+	
   }
   const handleChange = (event) => {
 	//   console.log(event.target.value)
