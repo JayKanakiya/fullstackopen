@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 const Persons = (props) => {
 	const disp = () => props.persons.map(person=>
-			<li key={person.name}> {person.name}</li>
+			<li key={person.name}> {person.name} {person.number}</li>
 	)
 	return (
 
@@ -13,11 +13,14 @@ const Persons = (props) => {
 
 const App = () => {
   const [ persons, setPersons] = useState([
-    { name: 'Arto Hellas' }
+	{ name: 'Arto Hellas',
+	   number: '9819984770'
+	}
   ]) 
   const [ newName, setNewName ] = useState('')
-  
-  const addName = (event) => {
+  const [newNumber, setNumber] = useState('')
+ 
+  const addDetails = (event) => {
 	  event.preventDefault()
 	//   console.log(event.target)
 	
@@ -29,11 +32,13 @@ const App = () => {
 		else{
 			const obj = {
 				name: newName,
+				number: newNumber
 			}
 			// console.log(persons)
 			// console.log(obj)		
 			setPersons(persons.concat(obj))
 			setNewName(' ')
+			setNumber(' ')
 		}
 	
   }
@@ -41,15 +46,23 @@ const App = () => {
 	//   console.log(event.target.value)
 	  setNewName(event.target.value)
   }
+  const handleNumberChange = (event) => {
+	//   console.log(event.target.value)
+	  setNumber(event.target.value)
+  }
   
   return (
     <div>
       <h2>Phonebook</h2>
-      <form onSubmit={addName}>
+      <form onSubmit={addDetails}>
         <div>
 		  name: <input
 			 value={newName}
 			 onChange={handleChange} 
+		  /> <br/>
+		  number: <input 
+			  value={newNumber}
+			  onChange = {handleNumberChange}
 		  />
         </div>
 		
