@@ -1,7 +1,11 @@
 import React, { useState } from 'react'
 
 const Persons = (props) => {
-	const disp = () => props.persons.map(person=>
+	var filteredNames = props.persons
+	if(props.showResults){
+		filteredNames = props.persons.filter(person => person.name.toLowerCase().includes(props.showResults.toLowerCase()))
+	}
+	const disp = () => filteredNames.map(person=>
 			<li key={person.name}> {person.name} {person.number}</li>
 	)
 	return (
@@ -13,12 +17,14 @@ const Persons = (props) => {
 
 const App = () => {
   const [ persons, setPersons] = useState([
-	{ name: 'Arto Hellas',
-	   number: '9819984770'
-	}
+	{ name: 'Arto Hellas', number: '040-123456' },
+    { name: 'Ada Lovelace', number: '39-44-5323523' },
+    { name: 'Dan Abramov', number: '12-43-234345' },
+    { name: 'Mary Poppendieck', number: '39-23-6423122' }
   ]) 
   const [ newName, setNewName ] = useState('')
   const [newNumber, setNumber] = useState('')
+  const [showResults, setResults] = useState('')
  
   const addDetails = (event) => {
 	  event.preventDefault()
@@ -50,10 +56,21 @@ const App = () => {
 	//   console.log(event.target.value)
 	  setNumber(event.target.value)
   }
+  const filterChange = (event) => {
+	  setResults(event.target.value)
+  }
+
   
   return (
     <div>
       <h2>Phonebook</h2>
+	  <div>
+		  filter shown with <input
+			value={showResults}
+			onChange = {filterChange}
+		  />
+	  </div>
+	  <h2>add a new </h2>
       <form onSubmit={addDetails}>
         <div>
 		  name: <input
@@ -71,7 +88,7 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-      <Persons persons={persons} />
+      <Persons persons={persons} showResults={showResults} />
     </div>
   )
 }
