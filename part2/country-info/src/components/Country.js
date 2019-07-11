@@ -1,13 +1,27 @@
 import React from "react";
-
+import DisplayCountry from './DisplayCountry'
 const Country = (props) => {
+    const viewData = (country) => {
+        flag = 1
+        return (
+            <div>
+            <DisplayCountry filteredCountries={country} />
+            {console.log(country)}
+            
+            </div>
+
+        )
+    }
+    var flag = 0
     var filteredCountries = props.countries
     if(props.filter){
         filteredCountries = filteredCountries.filter(country=>country.name.toLowerCase().includes(props.filter.toLowerCase()))
     }
     const disp = () => {
         return filteredCountries.map(country=>
-                <li key={country.name}> {country.name} </li>
+                <>
+                <li key={country.name}> {country.name} <button onClick={props.buttonClick} country={country.name}>show</button></li> 
+                </>
             )     
     }
 
@@ -20,26 +34,7 @@ const Country = (props) => {
     
     if(filteredCountries.length===1){
          return (
-            <div>
-                <h2>{filteredCountries[0].name}</h2>
-                <br/>
-            
-                capital {filteredCountries[0].capital}<br/>
-                population {filteredCountries[0].population}
-                <br/>
-                <h3>languages</h3>
-                <ul>
-                {
-                    filteredCountries[0].languages.map((lang, index)=>{
-                        return <li key={index}>{lang.name}</li>
-                    })
-                    
-                }
-                
-                 </ul>
-                 <br/>
-                 <img src={filteredCountries[0].flag}  width="150" height="150"/>
-            </div>
+            <DisplayCountry filteredCountries={filteredCountries} />
         )
     }
     

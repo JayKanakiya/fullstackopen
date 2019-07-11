@@ -14,9 +14,10 @@ const App = () => {
     const handleChange = (event) => {
         setFilter(event.target.value)
         // console.log(country);
-        
     }
-
+    const buttonClick = (event) => {
+        setFilter(event.target.attributes.country.value)
+    }
     return (
         <div>
             <input
@@ -25,7 +26,7 @@ const App = () => {
                 
             />
             <div>
-                <Country countries={country} filter={filter} />
+                <Country countries={country} filter={filter} buttonClick={buttonClick} />
             </div>
         </div>
     )
