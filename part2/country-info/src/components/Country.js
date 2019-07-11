@@ -1,18 +1,9 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import DisplayCountry from './DisplayCountry'
-const Country = (props) => {
-    const viewData = (country) => {
-        flag = 1
-        return (
-            <div>
-            <DisplayCountry filteredCountries={country} />
-            {console.log(country)}
-            
-            </div>
+import axios from 'axios'
 
-        )
-    }
-    var flag = 0
+const Country = (props) => {
+
     var filteredCountries = props.countries
     if(props.filter){
         filteredCountries = filteredCountries.filter(country=>country.name.toLowerCase().includes(props.filter.toLowerCase()))
@@ -33,6 +24,7 @@ const Country = (props) => {
     }
     
     if(filteredCountries.length===1){
+        
          return (
             <DisplayCountry filteredCountries={filteredCountries} />
         )
