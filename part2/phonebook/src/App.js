@@ -63,6 +63,11 @@ const Notification = (props) => {
 			</div>
 		)
 	}
+	return(
+		<div className="error">
+			{props.m.message}
+		</div>
+	)
 	
 }
 
@@ -110,6 +115,16 @@ const App = () => {
 					setPersons(newPers)
 					
 				})
+				.catch(error=>{
+					const mess = {
+						message: `${obj.name} has already been removed from the database `,
+						category: 'error'
+					}
+					setErrorMessage(mess)
+					setTimeout(() => {
+						setErrorMessage({...errorMessage, message: null})
+					}, 5000)
+				})
 			}
 		}
 		else{
@@ -134,6 +149,16 @@ const App = () => {
 					setPersons(persons.concat(newP))
 					setNewName('')
 					setNumber('')
+				})
+				.catch(error=>{
+					const mess = {
+						message: error.response.data.error,
+						category: 'error'
+					}
+					setErrorMessage(mess)
+					setTimeout(() => {
+						setErrorMessage({...errorMessage, message: null})
+					}, 5000)
 				})
 			
 		}
