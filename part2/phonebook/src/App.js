@@ -8,7 +8,7 @@ const Persons = (props) => {
 		filteredNames = props.persons.filter(person => person.name.toLowerCase().includes(props.showResults.toLowerCase()))
 	}
 	const disp = () => filteredNames.map(person=>
-			<li key={person.name}> {person.name} {person.number}</li>
+			<li key={person.name}> {person.name} {person.number} <button onClick={()=> props.deleteP(person.id)}>delete</button></li>
 	)
 	return (
 
@@ -90,6 +90,17 @@ const App = () => {
 		}
 	
   }
+
+  const deletePersonHandler  = (id) => {
+		const p = persons.find( person => person.id === id)
+		if(window.confirm(`Delete ${p.name} ?`)){
+			personService
+				.deletePerson(id)
+				.then(response => {
+					setPersons(persons.filter(person=>person.id!==id))
+				})
+		}
+  }
   const handleChange = (event) => {
 	//   console.log(event.target.value)
 	  setNewName(event.target.value)
@@ -110,7 +121,7 @@ const App = () => {
 	  <h2>add a new </h2>
       <PersonForm addDetails={addDetails} newName={newName} handleChange={handleChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
       <h2>Numbers</h2>
-      <Persons persons={persons} showResults={showResults} />
+      <Persons persons={persons} showResults={showResults} deleteP={deletePersonHandler} />
     </div>
   )
 }
