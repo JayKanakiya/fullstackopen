@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import personService from './services/person'
+import './index.css'
 
 const Persons = (props) => {
 	var filteredNames = props.persons
@@ -51,6 +52,20 @@ const PersonForm = (props) => {
 	)
 }
 
+const Notification = (props) => {
+	if(props.m.message === null){
+		return null
+	}
+	if(props.m.category === "success"){
+		return(
+			<div className="success">
+				{props.m.message}
+			</div>
+		)
+	}
+	
+}
+
 const App = () => {
 	const [ persons, setPersons] = useState([])
 	useEffect(()=> {
@@ -62,6 +77,10 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [newNumber, setNumber] = useState('')
   const [showResults, setResults] = useState('')
+  const [errorMessage, setErrorMessage] = useState({
+	  message: null,
+	  category: null
+  })
  
   const addDetails = (event) => {
 	  event.preventDefault()
@@ -79,8 +98,17 @@ const App = () => {
 				personService
 				.update(id, obj)
 				.then(newP => {
+					const mess = {
+						message: `Added ${newP.name}`,
+						category: 'success'
+					}
+					setErrorMessage(mess)
+					setTimeout(() => {
+						setErrorMessage({...errorMessage, message: null})
+					}, 5000)
 					const newPers = persons.map(person=> person.id!==id ? person : newP)
 					setPersons(newPers)
+					
 				})
 			}
 		}
@@ -94,6 +122,15 @@ const App = () => {
 			personService
 				.create(obj)
 				.then(newP => {
+
+					const mess = {
+						message: `Added ${newP.name}`,
+						category: 'success'
+					}
+					setErrorMessage(mess)
+					setTimeout(() => {
+						setErrorMessage({...errorMessage, message: null})
+					}, 5000)
 					setPersons(persons.concat(newP))
 					setNewName('')
 					setNumber('')
@@ -129,6 +166,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+	  <Notification m={errorMessage} />
 	  <Filter showResults={showResults} filterChange={filterChange} />
 	  <h2>add a new </h2>
       <PersonForm addDetails={addDetails} newName={newName} handleChange={handleChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
