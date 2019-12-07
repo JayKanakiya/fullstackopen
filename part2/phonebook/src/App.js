@@ -69,8 +69,20 @@ const App = () => {
 	
 		// console.log(persons[1]);
 
-		if(persons.findIndex(person => person.name === newName) > -1){
-			alert(newName + ' is already in the phonebook')
+		if(persons.findIndex(person => person.name === newName) > -1 ){
+			if(window.confirm(newName + ' is already added phonebook, replace the old number with new one?')){
+				const id = persons.find(person=>person.name===newName).id
+				const obj = {
+					name: newName,
+					number: newNumber,
+				}
+				personService
+				.update(id, obj)
+				.then(newP => {
+					const newPers = persons.map(person=> person.id!==id ? person : newP)
+					setPersons(newPers)
+				})
+			}
 		}
 		else{
 			const obj = {
