@@ -52,6 +52,13 @@ app.get('/api/persons/:id', (req,res)=>{
         res.status(404).end()
     }
 })
+
+app.delete('/api/persons/:id', (req,res) => {
+    const id = Number(req.params.id)
+    const person = phonebook.filter(person=>person.id!==id)
+    res.json(person)
+    res.status(204).end()
+}) 
 const port = 3001
 app.listen(port, ()=>{
     console.log(`Server running on port ${port}`)
