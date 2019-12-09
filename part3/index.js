@@ -1,5 +1,9 @@
 const express = require('express')
+const bodyParser = require('body-parser')
+
 const app = express()
+
+app.use(bodyParser.json())
 
 let phonebook = [
     {
@@ -57,8 +61,18 @@ app.delete('/api/persons/:id', (req,res) => {
     const id = Number(req.params.id)
     const person = phonebook.filter(person=>person.id!==id)
     res.json(person)
+    phonebook = person
     res.status(204).end()
 }) 
+
+app.post('/api/persons', (req,res) => {
+    const person = req.body
+    const id = Math.random(1, 10000)
+    person.id = id
+    phonebook = phonebook.concat(person)
+    res.json(phonebook)
+
+})
 const port = 3001
 app.listen(port, ()=>{
     console.log(`Server running on port ${port}`)
