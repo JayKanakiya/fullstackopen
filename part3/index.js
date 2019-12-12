@@ -1,6 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-
+const morgan = require('morgan')
 const app = express()
 
 app.use(bodyParser.json())
@@ -28,6 +28,13 @@ let phonebook = [
     }
   ]
 
+  morgan.token('data',(request)=>{
+    if(request.method=='POST')
+    return " "+JSON.stringify(request.body)
+    else
+    return " "
+})
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :data'))
 
 app.get('/',(req,res)=>{
     res.send('<h1>Phonebook</h1>')
@@ -78,7 +85,7 @@ app.post('/api/persons', (req,res) => {
         })
     }
     const p = phonebook.find(p=>p.name===person.name)
-    console.log(p)
+    // console.log(p)
     if(p){
         return res.status(400).json({
             "error": "name must be unique"
@@ -87,7 +94,9 @@ app.post('/api/persons', (req,res) => {
     const id = Math.floor((Math.random()*4000000)+1)
     person.id = id
     phonebook = phonebook.concat(person)
+    console.log(phonebook)
     res.json(phonebook)
+    console.log('Person Added')
 
 })
 const port = 3001
