@@ -104,7 +104,7 @@ app.post('/persons', (req,res) => {
     console.log('Person Added')
 
 })
-const port = 3001
+const port = process.env.PORT || 3001
 app.listen(port, ()=>{
     console.log(`Server running on port ${port}`)
 })
