@@ -1,11 +1,16 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
+const cors = require('cors')
+
 const app = express()
 
 app.use(bodyParser.json())
+app.use(cors())
+app.use(express.static('build'))
 
-let phonebook = [
+
+let persons= [
     {
       id: 1,
       name: "Arto Hellas",
@@ -41,21 +46,21 @@ app.get('/',(req,res)=>{
 })
 
 
-app.get('/api/persons',(req,res) => {
-    res.json(phonebook)
-    console.log(phonebook)
+app.get('/persons',(req,res) => {
+    res.json(persons)
+    console.log(persons)
 })
 
 app.get('/info',(req,res)=>{
-    const len = phonebook.length
+    const len = persons.length
     var date = new Date()
     res.send(`Phonebook has info for ${len} people<br>${date}`)
     
 })
 
-app.get('/api/persons/:id', (req,res)=>{
+app.get('/persons/:id', (req,res)=>{
     const id = Number(req.params.id)
-    const person = phonebook.find(person=>person.id === id)
+    const person = persons.find(person=>person.id === id)
     if(person){
         res.json(person)
     }
@@ -64,15 +69,15 @@ app.get('/api/persons/:id', (req,res)=>{
     }
 })
 
-app.delete('/api/persons/:id', (req,res) => {
+app.delete('/persons/:id', (req,res) => {
     const id = Number(req.params.id)
-    const person = phonebook.filter(person=>person.id!==id)
+    const person = persons.filter(person=>person.id!==id)
     res.json(person)
-    phonebook = person
+    persons = person
     res.status(204).end()
 }) 
 
-app.post('/api/persons', (req,res) => {
+app.post('/persons', (req,res) => {
     const person = req.body
     if(!person.name){
         return res.status(400).json({
@@ -84,7 +89,7 @@ app.post('/api/persons', (req,res) => {
             "error": "number missing"
         })
     }
-    const p = phonebook.find(p=>p.name===person.name)
+    const p = persons.find(p=>p.name===person.name)
     // console.log(p)
     if(p){
         return res.status(400).json({
@@ -93,9 +98,9 @@ app.post('/api/persons', (req,res) => {
     }
     const id = Math.floor((Math.random()*4000000)+1)
     person.id = id
-    phonebook = phonebook.concat(person)
-    console.log(phonebook)
-    res.json(phonebook)
+    persons = persons.concat(person)
+    // console.log(phonebook)
+    res.json(persons)
     console.log('Person Added')
 
 })
