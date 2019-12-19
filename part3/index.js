@@ -81,7 +81,7 @@ app.get('/api/persons/:id', (req,res)=>{
     })
 })
 
-app.delete('/api/persons/:id', (req,res) => {
+app.delete('/api/persons/:id', (req,res, nexta) => {
     Person.findByIdAndRemove(req.params.id)
         .then(result => {
             res.status(204).end()
@@ -101,18 +101,7 @@ app.post('/api/persons', (req,res) => {
             "error": "number missing"
         })
     }
-    // const p = persons.find(p=>p.name===person.name)
-    // // console.log(p)
-    // if(p){
-    //     return res.status(400).json({
-    //         "error": "name must be unique"
-    //     })
-    // }
-    // const id = Math.floor((Math.random()*4000000)+1)
-    // person.id = id
-    // persons = persons.concat(person)
-    // console.log(phonebook)
-
+    
     const person = new Person({
         name: p.name,
         number: p.number
@@ -123,6 +112,20 @@ app.post('/api/persons', (req,res) => {
     // res.json(persons)
     console.log('Person Added')
 
+})
+
+app.put('/api/persons/:id', (req,res,next) => {
+    const p = req.body
+    const person = {
+        name: p.name,
+        number: p.number
+    }
+
+    Person.findByIdAndUpdate(req.params.id, p, {new: true})
+        .then(newP => {
+            res.json(newP.toJSON())
+        })
+        .catch(error => next(error))
 })
 
 
