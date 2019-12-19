@@ -79,29 +79,37 @@ app.delete('/api/persons/:id', (req,res) => {
 }) 
 
 app.post('/api/persons', (req,res) => {
-    const person = req.body
-    if(!person.name){
+    const p = req.body
+    if(!p.name){
         return res.status(400).json({
             "error": "name missing"
         })
     }
-    if(!person.number){
+    if(!p.number){
         return res.status(400).json({
             "error": "number missing"
         })
     }
-    const p = persons.find(p=>p.name===person.name)
-    // console.log(p)
-    if(p){
-        return res.status(400).json({
-            "error": "name must be unique"
-        })
-    }
-    const id = Math.floor((Math.random()*4000000)+1)
-    person.id = id
-    persons = persons.concat(person)
+    // const p = persons.find(p=>p.name===person.name)
+    // // console.log(p)
+    // if(p){
+    //     return res.status(400).json({
+    //         "error": "name must be unique"
+    //     })
+    // }
+    // const id = Math.floor((Math.random()*4000000)+1)
+    // person.id = id
+    // persons = persons.concat(person)
     // console.log(phonebook)
-    res.json(persons)
+
+    const person = new Person({
+        name: p.name,
+        number: p.number
+    })
+    person.save().then(newP => {
+        res.json(newP.toJSON())
+    })
+    // res.json(persons)
     console.log('Person Added')
 
 })
