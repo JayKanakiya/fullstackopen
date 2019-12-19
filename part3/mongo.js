@@ -35,15 +35,6 @@ if(process.argv[3]){
     console.log(`added ${name} ${number} to phonebook`)
   })
 }
-// const person = new Person({
-//     name: 'Sachi Kanakiya',
-//     number: '9819810922',
-// })
-
-// person.save().then(response => {
-//     mongoose.connection.close()
-// })
-
 
 else{
   

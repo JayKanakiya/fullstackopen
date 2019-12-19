@@ -1,13 +1,18 @@
+require('dotenv').config()
 const express = require('express')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const cors = require('cors')
+const Person = require('./models/person')
+const mongoose = require('mongoose')
 
 const app = express()
+
 
 app.use(bodyParser.json())
 app.use(cors())
 app.use(express.static('build'))
+
 
 
 let persons= [
@@ -35,7 +40,7 @@ let persons= [
 
   morgan.token('data',(request)=>{
     if(request.method=='POST')
-    return " "+JSON.stringify(request.body)
+    return " "+ JSON.stringify(request.body)
     else
     return " "
 })
@@ -46,9 +51,10 @@ app.get('/',(req,res)=>{
 })
 
 
-app.get('/persons',(req,res) => {
-    res.json(persons)
-    console.log(persons)
+app.get('/api/persons',(req,res) => {
+    Person.find({}).then(p => {
+        res.json(p.map(pers => pers.toJSON()))
+    })
 })
 
 app.get('/info',(req,res)=>{
@@ -58,18 +64,13 @@ app.get('/info',(req,res)=>{
     
 })
 
-app.get('/persons/:id', (req,res)=>{
-    const id = Number(req.params.id)
-    const person = persons.find(person=>person.id === id)
-    if(person){
-        res.json(person)
-    }
-    else{
-        res.status(404).end()
-    }
+app.get('/api/persons/:id', (req,res)=>{
+    Person.findById(req.params.id).then(p => {
+        res.json(p.toJSON())
+    })
 })
 
-app.delete('/persons/:id', (req,res) => {
+app.delete('/api/persons/:id', (req,res) => {
     const id = Number(req.params.id)
     const person = persons.filter(person=>person.id!==id)
     res.json(person)
@@ -77,7 +78,7 @@ app.delete('/persons/:id', (req,res) => {
     res.status(204).end()
 }) 
 
-app.post('/persons', (req,res) => {
+app.post('/api/persons', (req,res) => {
     const person = req.body
     if(!person.name){
         return res.status(400).json({
