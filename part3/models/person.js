@@ -14,8 +14,8 @@ mongoose.connect(url, { useNewUrlParser: true })
 
 
 const personSchema = new mongoose.Schema({
-    name: {type: String, require: true, unique: true},
-    number: {type: String, require: true, unique: true}
+    name: {type: String, require: true, unique: true, minlength:3},
+    number: {type: String, require: true, unique: true, minlength: 8}
 
 })
 

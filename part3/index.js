@@ -19,35 +19,15 @@ const errorHandler = (error, request, response, next) => {
     if (error.name === 'CastError' && error.kind === 'ObjectId') {
       return response.status(400).send({ error: 'malformatted id' })
     } 
+    else if (error.name === 'ValidationError') {
+        console.log("validation error response");
+        return response.status(400).json({ error: error.message })
+    }
   
     next(error)
 }
 app.use(errorHandler)
 
-
-
-// let persons= [
-//     {
-//       id: 1,
-//       name: "Arto Hellas",
-//       number: "040-123456"
-//     },
-//     {
-//       id: 2,
-//       name: "Ada Lovelace",
-//       number: "39-44-5323523"
-//     },
-//     {
-//       id: 3,
-//       name: "Dan Abramov",
-//       number: "12-43-234345"
-//     },
-//     {
-//       id: 4,
-//       name: "Mary Poppendieck",
-//       number: "39-23-6423122"
-//     }
-//   ]
 
   morgan.token('data',(request)=>{
     if(request.method=='POST')
@@ -120,12 +100,10 @@ app.post('/api/persons', (req,res,next) => {
         name: p.name,
         number: p.number
     })
-    person.save()
-        .then(newP => newP.toJSON())
-        .then(savedPerson => {
-            res.json(savedPerson)
-        })
-        .catch(error => next(error))
+    person.save().then(newP => {
+        res.json(newP.toJSON())
+    })
+    .catch(error => next(error))
     // res.json(persons)
     console.log('Person Added')
 
