@@ -69,16 +69,22 @@ app.get('/api/persons',(req,res) => {
 })
 
 app.get('/info',(req,res)=>{
-    const len = persons.length
+    // const len = persons.length
     var date = new Date()
-    res.send(`Phonebook has info for ${len} people<br>${date}`)
+    console.log(date)
+    Person.find({}).then(p => {
+            console.log(p.length)
+            res.send(`<p> Phonebook has info for ${p.length} people</p>`)
+            res.send(date)
+        })
     
 })
 
-app.get('/api/persons/:id', (req,res)=>{
+app.get('/api/persons/:id', (req,res,next)=>{
     Person.findById(req.params.id).then(p => {
         res.json(p.toJSON())
     })
+    .catch(error => next(error))
 })
 
 app.delete('/api/persons/:id', (req,res, nexta) => {
