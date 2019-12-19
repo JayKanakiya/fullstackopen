@@ -95,7 +95,7 @@ app.delete('/api/persons/:id', (req,res, nexta) => {
         .catch(error => next(error))
 }) 
 
-app.post('/api/persons', (req,res) => {
+app.post('/api/persons', (req,res,next) => {
     const p = req.body
     if(!p.name){
         return res.status(400).json({
@@ -108,13 +108,24 @@ app.post('/api/persons', (req,res) => {
         })
     }
     
+    Person.find({number: p.number})
+        .then(num => {
+            if(num.length!==0){
+                return res.status(400).json({
+                    "error": "number must be unique"
+                })
+            }
+        })
     const person = new Person({
         name: p.name,
         number: p.number
     })
-    person.save().then(newP => {
-        res.json(newP.toJSON())
-    })
+    person.save()
+        .then(newP => newP.toJSON())
+        .then(savedPerson => {
+            res.json(savedPerson)
+        })
+        .catch(error => next(error))
     // res.json(persons)
     console.log('Person Added')
 
