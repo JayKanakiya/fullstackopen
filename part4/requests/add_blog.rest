@@ -1,0 +1,9 @@
+post http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "title": "Catcher in the Rye",
+    "author": "J. D. Salinger",
+    "url": "https://www.google.com/catcher",
+    "likes": 20
+}
