@@ -3,6 +3,8 @@ import axios from 'axios'
 import personService from './services/person'
 import './index.css'
 
+
+
 const Persons = (props) => {
 	var filteredNames = props.persons
 	if(props.showResults){
@@ -116,6 +118,7 @@ const App = () => {
 					
 				})
 				.catch(error=>{
+					
 					const mess = {
 						message: `${obj.name} has already been removed from the database `,
 						category: 'error'
@@ -151,6 +154,7 @@ const App = () => {
 					setNumber('')
 				})
 				.catch(error=>{
+					// console.log(error.respon.data.error)
 					const mess = {
 						message: error.response.data.error,
 						category: 'error'
