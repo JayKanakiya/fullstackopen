@@ -6,6 +6,11 @@ const api = supertest(app)
 
 const Blog = require('../models/Blog')
 
+const blogsInDb = async () => {
+	const blogs = await Blog.find({})
+	return blogs.map((b) => b.toJSON())
+}
+
 const initialBlogs = [
 	{
 		_id: '5a422a851b54a676234d17f7',
@@ -75,6 +80,21 @@ test('all blogs returned as json', async () => {
 		.expect('Content-Type', /application\/json/)
 
 	expect(response.body).toHaveLength(6)
+})
+
+test('a new blog is added', async () => {
+	const newBlog = {
+		title: 'Theory of Everything',
+		author: 'John Tam',
+		url: 'http://blog.tam.com/theory/',
+		likes: 20,
+	}
+
+	await api.post('/api/blogs').send(newBlog).expect(201)
+
+	const response = await api.get('/api/blogs').expect(200)
+
+	expect(response.body).toHaveLength(initialBlogs.length + 1)
 })
 
 afterAll(() => {
