@@ -7,7 +7,7 @@ const logger = require('./utils/logger')
 const mongoose = require('mongoose')
 const blogRouter = require('./controllers/blog')
 const bodyParser = require('body-parser')
-
+require('express-async-errors')
 logger.info('connecting to', config.MONGODB_URI)
 
 mongoose
