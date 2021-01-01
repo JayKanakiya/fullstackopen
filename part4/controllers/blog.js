@@ -1,5 +1,7 @@
 const express = require('express')
 const Blog = require('../models/Blog')
+const { request } = require('../app')
+const { response } = require('express')
 
 const blogRouter = express.Router()
 
@@ -8,11 +10,14 @@ blogRouter.get('/', async (request, response) => {
 	response.json(blogs)
 })
 
-blogRouter.post('/', (request, response) => {
+blogRouter.post('/', async (request, response) => {
 	const blog = new Blog(request.body)
-	blog.save().then((result) => {
-		response.status(201).json(result)
-	})
+	const savedBlog = await blog.save()
+	response.json(savedBlog.toJSON())
 })
 
+blogRouter.delete('/:id', async (request, response) => {
+	await Blog.findByIdAndRemove(request.params.id)
+	response.status(204).end()
+})
 module.exports = blogRouter

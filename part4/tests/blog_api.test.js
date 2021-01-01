@@ -97,6 +97,24 @@ test('a new blog is added', async () => {
 	expect(response.body).toHaveLength(initialBlogs.length + 1)
 })
 
+test('delete a blog', async () => {
+	const deleteblog = {
+		_id: '5a422ba71b54a676234d17fb',
+		title: 'TDD harms architecture',
+		author: 'Robert C. Martin',
+		url:
+			'http://blog.cleancoder.com/uncle-bob/2017/03/03/TDD-Harms-Architecture.html',
+		likes: 0,
+		__v: 0,
+	}
+
+	await api.delete(`/api/blogs/${deleteblog._id}`).expect(204)
+
+	const blogsAtEnd = await blogsInDb()
+
+	expect(blogsAtEnd.length).toBe(initialBlogs.length - 1)
+})
+
 afterAll(() => {
 	mongoose.connection.close()
 })
