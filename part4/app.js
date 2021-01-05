@@ -7,6 +7,7 @@ const logger = require('./utils/logger')
 const mongoose = require('mongoose')
 const blogRouter = require('./controllers/blog')
 const userRouter = require('./controllers/user')
+const loginRouter = require('./controllers/login')
 const bodyParser = require('body-parser')
 require('express-async-errors')
 logger.info('connecting to', config.MONGODB_URI)
@@ -33,5 +34,6 @@ app.use(middleware.errorHandler)
 
 app.use('/api/blogs', blogRouter)
 app.use('/api/users', userRouter)
+app.use('/api/login', loginRouter)
 
 module.exports = app
