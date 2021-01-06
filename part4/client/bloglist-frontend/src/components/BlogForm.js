@@ -3,6 +3,7 @@ import React from 'react'
 const BlogForm = ({ newBlog, createBlog, setNewBlog }) => {
 	return (
 		<form onSubmit={createBlog}>
+			<h2 className='blog-heading'>create new blog</h2>
 			<div>
 				title
 				<input
