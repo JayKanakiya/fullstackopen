@@ -6,17 +6,13 @@ import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import './App.css'
+
 const App = () => {
 	const [blogs, setBlogs] = useState([])
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
 	const [user, setUser] = useState(null)
 	const [error, setError] = useState(null)
-	const [newBlog, setNewBlog] = useState({
-		title: '',
-		author: '',
-		url: '',
-	})
 
 	const handleLogin = async (event) => {
 		event.preventDefault()
@@ -40,12 +36,10 @@ const App = () => {
 		window.localStorage.removeItem('loggedinuser')
 	}
 
-	const createBlog = async (event) => {
-		event.preventDefault()
-		console.log('frfrf')
-		const res = await blogService.createBlog(newBlog)
+	const createBlog = async (newObj) => {
+		console.log('in')
+		const res = await blogService.createBlog(newObj)
 		setBlogs(blogs.concat(res))
-		console.log(blogs)
 		blogFormRef.current.toggleVisibility()
 	}
 
@@ -81,11 +75,7 @@ const App = () => {
 						{user.name} is logged in <button onClick={logout}>logout</button>
 					</div>
 					<Togglable label='add new blog' ref={blogFormRef}>
-						<BlogForm
-							newBlog={newBlog}
-							createBlog={createBlog}
-							setNewBlog={setNewBlog}
-						/>
+						<BlogForm createBlog={createBlog} />
 					</Togglable>
 					<div className='bloglist'>
 						{blogs.map((blog) => (
