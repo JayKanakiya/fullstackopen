@@ -30,4 +30,22 @@ describe('blog app', function () {
 			cy.contains('Wrong Credentials')
 		})
 	})
+
+	describe('when logged in', function () {
+		beforeEach(function () {
+			cy.contains('login').click()
+			cy.get('#username').type('jacknex')
+			cy.get('#password').type('test')
+			cy.get('#login-button').click()
+		})
+
+		it('add a new blog', function () {
+			cy.contains('add new blog').click()
+			cy.get('#title').type('test blog')
+			cy.get('#author').type('jayk')
+			cy.get('#url').type('cypresstest.com')
+			cy.get('#create-blog').click()
+			cy.contains('test blog')
+		})
+	})
 })
